@@ -15,11 +15,15 @@ const useStyles = makeStyles((theme)=>({
        borderBottomLeftRadius:0,
    },
    root:{
-       //border:"1px solid rgba(0,0,0,0.5)"
    },
    messageHistory:{
        padding:theme.spacing(3),
-       backgroundColor:"rgba(81, 0, 45,0.1)"
+       backgroundColor:"rgba(81, 0, 45,0.1)",
+        overflowX: "hidden",
+        overflowY: "scroll",
+        scrollSnapAlign: "end",
+        overscrollBehaviorY: "contain",
+        scrollSnapType: "y proximity",
    },
    messageInput:{
        padding:theme.spacing(3),
@@ -32,7 +36,7 @@ const useStyles = makeStyles((theme)=>({
         '&:hover':{
             backgroundColor:"black"
         }
-   }
+   },
 }));
 
 
@@ -44,6 +48,7 @@ export const Conversation = styled.div`
   margin: 10px 10px;
   padding: 30px 30px;
   display: flex;
+  height:50vh;
   flex-direction: column;
   padding: 10px;
 `
@@ -128,6 +133,7 @@ const Chat = (props) =>{
 
         )
     },[])
+
     const handleSubmit = (e) =>{
         if(inputMessage.trim() !== ""){
             const timestamp = messageHistoryStore.length
@@ -137,16 +143,21 @@ const Chat = (props) =>{
                 from:"me"
             }])
             setInputMessage("")
+            var elem = document.getElementById('messageHistory');
+            console.log(elem.scrollTop, elem.scrollHeight)
+            elem.scrollTop = elem.scrollHeight;
+            
         }
     }
 
 
     return (
+        <div className={classes.container}>
         <Grid className={classes.root} component={Paper} elevation={3} container direction="column" alignItems="stretch" justify="center" >
             <Grid className={classes.header} item xs={12}>
                <Typography variant='h5'> Chat Title Here</Typography>
             </Grid>
-            <Grid className={classes.messageHistory} item xs={12}>
+            <Grid className={classes.messageHistory} id="messageHistory" item xs={12}>
                 <Conversation>
                     {
                         messageHistoryStore.map((message)=>{
@@ -170,6 +181,7 @@ const Chat = (props) =>{
                 </Grid>
             </Grid>
         </Grid>
+    </div>
     )
 }
 
