@@ -14,8 +14,6 @@ const useStyles = makeStyles((theme)=>({
        borderBottomRightRadius:0,
        borderBottomLeftRadius:0,
    },
-   root:{
-   },
    messageHistory:{
        padding:theme.spacing(3),
        backgroundColor:"rgba(81, 0, 45,0.1)",
@@ -24,6 +22,7 @@ const useStyles = makeStyles((theme)=>({
         scrollSnapAlign: "end",
         overscrollBehaviorY: "contain",
         scrollSnapType: "y proximity",
+        paddingBottom:theme.spacing(6)
    },
    messageInput:{
        padding:theme.spacing(3),
@@ -71,6 +70,9 @@ export const FromMe = styled(ConversationBubble)`
  color: white;
  background: #F1424F;
  align-self: flex-end;
+ &:last-child{
+     marginBottom:100px;
+ }
  &:before {
   right: -7px;
   border-right: 20px solid #F1424F;
