@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components"
 import {Grid, makeStyles, Paper,Typography,TextField, Button} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
@@ -27,9 +27,14 @@ const useStyles = makeStyles((theme)=>({
    },
    button:{
         backgroundColor:"#540032",
-        color:"white"
+        color:"white",
+        transition:"250ms",
+        '&:hover':{
+            backgroundColor:"black"
+        }
    }
 }));
+
 
 
 export const Conversation = styled.div`
@@ -93,8 +98,49 @@ export const FromYou = styled(ConversationBubble)`
  }
 `
 
+
+
 const Chat = (props) =>{
     const classes = useStyles()
+    const [messageHistoryStore,setMessageHistoryStore] = useState([])
+    const [inputMessage, setInputMessage] = useState("")
+
+    useEffect(()=>{
+        setMessageHistoryStore(
+            [
+                {
+                    "content":"Hello, Sam!",
+                    "timestamp": 0,
+                    "from":"you"
+                },
+                {
+                    "content":"How's the hackathon?",
+                    "timestamp":1,
+                    "from":"me"
+        
+                },
+                {
+                    "content":"um, it's going...",
+                    "timestamp":2,
+                    "from":"you"
+                }
+            ]
+
+        )
+    },[])
+    const handleSubmit = (e) =>{
+        if(inputMessage.trim() !== ""){
+            const timestamp = messageHistoryStore.length
+            setMessageHistoryStore([...messageHistoryStore,{
+                content:inputMessage,
+                timestamp:timestamp,
+                from:"me"
+            }])
+            setInputMessage("")
+        }
+    }
+
+
     return (
         <Grid className={classes.root} component={Paper} elevation={3} container direction="column" alignItems="stretch" justify="center" >
             <Grid className={classes.header} item xs={12}>
@@ -102,17 +148,24 @@ const Chat = (props) =>{
             </Grid>
             <Grid className={classes.messageHistory} item xs={12}>
                 <Conversation>
-                    <FromMe> HELLOkdfjlakdsjf;lakje</FromMe>
-                    <FromYou> Como estas? </FromYou>
+                    {
+                        messageHistoryStore.map((message)=>{
+                            if(message.from === "me"){
+                                return <FromMe key={message.timestamp}>{message.content}</FromMe>
+                            }else{
+                                return <FromYou key={message.timestamp}>{message.content}</FromYou>
+                            }
+                        })
+                    }
                 </Conversation>
             </Grid>
             <Grid className={classes.messageInput} item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={7} md={11}>
-                        <TextField fullWidth id="outlined-basic" label="Outlined" variant="outlined" />
+                        <TextField fullWidth id="outlined-basic" id="inputfield" value={inputMessage} onChange={(e)=>setInputMessage(e.target.value)} label="Enter a message" variant="outlined" />
                     </Grid>
                     <Grid item xs={5} md={1}>
-                        <Button variant='contained' className={classes.button}>SEND&nbsp;<SendIcon /></Button>
+                        <Button variant='contained' onClick={handleSubmit} className={classes.button}>SEND&nbsp;<SendIcon /></Button>
                     </Grid>
                 </Grid>
             </Grid>
