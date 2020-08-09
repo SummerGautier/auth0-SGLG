@@ -3,7 +3,9 @@ import {Button, Grid, Paper, TextField, Typography} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 import * as axios from 'axios'
 import {Conversation, FromMe, FromYou, useStyles} from './styles'
-
+import {LoginButton} from './Auth0'
+import { Auth0Provider } from "@auth0/auth0-react"
+import {AUTH0_CLIENT_ID, AUTH0_DOMAIN} from './config'
 
 const Chat = (props) => {
   const classes = useStyles()
@@ -28,7 +30,7 @@ const Chat = (props) => {
           setCovidData(response.data)
           setCountryIndexes(countriesFrom(response.data))
       });
-      
+
 
     };
     fetchData();
@@ -97,12 +99,12 @@ const Chat = (props) => {
         response
       ]
     )
-        setTimeout(function(){ 
+        setTimeout(function(){
             var elem = document.getElementById('messageHistory');
             elem.scrollTop = elem.scrollHeight;
         }, 250);
 
-        
+
   }
 
 
@@ -112,13 +114,23 @@ const Chat = (props) => {
     }
   }
 
+  function onRedirectCallback (foo) {
+    console.log(foo)
+    alert("onRedirectCallback", foo)
+  }
 
   return (
+    <Auth0Provider
+      domain={AUTH0_DOMAIN}
+      client_id={AUTH0_CLIENT_ID}
+      redirect_uri={window.location.origin}
+      onRedirectCallback={onRedirectCallback}
+    >
     <div className={classes.container}>
       <Grid className={classes.root}  component={Paper} elevation={3} container direction="column" alignItems="stretch"
             justify="center">
         <Grid className={classes.header} item xs={12}>
-          <Typography variant='h5'> Covid-19 ChatBot</Typography>
+          <Typography variant='h5'> Covid-19 ChatBot</Typography> <LoginButton/>
         </Grid>
         <Grid className={classes.messageHistory} id="messageHistory" item xs={12}>
           <Conversation  className={classes.scrollable}>
@@ -147,6 +159,7 @@ const Chat = (props) => {
         </Grid>
       </Grid>
     </div>
+    </Auth0Provider>
   )
 }
 
