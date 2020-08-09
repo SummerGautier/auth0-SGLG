@@ -58,7 +58,8 @@ const Chat = (props) => {
   function getBotResponse(inputMessage, timestamp) {
 
     const requestedCountry = Object.keys(countryIndexes).filter(countryName => inputMessage.toLowerCase().includes(countryName.toLowerCase()))[0]
-    if (typeof(requestedCountry) !== undefined) {
+
+    if (typeof(requestedCountry) !== "undefined") {
       return {
         content: getCovidInfoByCountry(requestedCountry),
         timestamp: timestamp + 1,
