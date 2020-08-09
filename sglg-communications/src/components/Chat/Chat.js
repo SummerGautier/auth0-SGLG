@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components"
-import {Grid, makeStyles, Paper, Typography, TextField, Button} from '@material-ui/core'
+import {Button, Grid, makeStyles, Paper, TextField, Typography} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
+import * as axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -37,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-
 
 export const Conversation = styled.div`
   font-family: "Helvetica Neue", Helvetica, sans-serif;
@@ -109,6 +109,19 @@ const Chat = (props) => {
   const classes = useStyles()
   const [messageHistoryStore, setMessageHistoryStore] = useState([])
   const [inputMessage, setInputMessage] = useState("")
+  const [covid19Facts, setCovid19Facts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        "https://api.covid19api.com/summary"
+      );
+
+      setCovid19Facts(result.data);
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     setMessageHistoryStore(
@@ -133,19 +146,47 @@ const Chat = (props) => {
     )
   }, [])
 
+  /**
+   * https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+   * Returns a random integer between min (inclusive) and max (inclusive).
+   * The value is no lower than min (or the next integer greater than min
+   * if min isn't an integer) and no greater than max (or the next integer
+   * lower than max if max isn't an integer).
+   * Using Math.round() will give you a non-uniform distribution!
+   */
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function addMessage(inputMessage) {
+    const timestamp = messageHistoryStore.length
+    setInputMessage("")
+    setMessageHistoryStore([...messageHistoryStore, {
+      content: inputMessage,
+      timestamp: timestamp,
+      from: "me"
+    }, {
+      content: covid19Message(),
+      timestamp: timestamp + 2,
+      from: "you"
+    }])
+  }
+
+  function covid19Message() {
+    const countryPosition = getRandomInt(0, covid19Facts['Countries'].length)
+    const countryData = covid19Facts['Countries'][countryPosition]
+    const newConfirmed = countryData['NewConfirmed']
+    const countryName = countryData['Country']
+    return `Did you know... on ${covid19Facts['Date']} there are ${newConfirmed} cases in ${countryName}`
+  }
+
   const handleSubmit = (e) => {
     if (inputMessage.trim() !== "") {
-      const timestamp = messageHistoryStore.length
-      setMessageHistoryStore([...messageHistoryStore, {
-        content: inputMessage,
-        timestamp: timestamp,
-        from: "me"
-      }])
-      setInputMessage("")
+      addMessage(inputMessage)
       var elem = document.getElementById('messageHistory');
-      console.log(elem.scrollTop, elem.scrollHeight)
       elem.scrollTop = elem.scrollHeight;
-
     }
   }
 
