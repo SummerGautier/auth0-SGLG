@@ -38,19 +38,8 @@ const Chat = (props) => {
     setMessageHistoryStore(
       [
         {
-          "content": "Hello, Sam!",
+          "content": "Ask me about a country and I'll tell you a Covid-19 statistic",
           "timestamp": 0,
-          "from": "you"
-        },
-        {
-          "content": "How's the hackathon?",
-          "timestamp": 1,
-          "from": "me"
-
-        },
-        {
-          "content": "um, it's going...",
-          "timestamp": 2,
           "from": "you"
         }
       ]
@@ -107,10 +96,10 @@ const Chat = (props) => {
 
   return (
     <div className={classes.container}>
-      <Grid className={classes.root} component={Paper} elevation={3} container direction="column" alignItems="stretch"
+      <Grid className={classes.root}  component={Paper} elevation={3} container direction="column" alignItems="stretch"
             justify="center">
         <Grid className={classes.header} item xs={12}>
-          <Typography variant='h5'> Chat Title Here</Typography>
+          <Typography variant='h5'> Covid-19 ChatBot</Typography>
         </Grid>
         <Grid className={classes.messageHistory} id="messageHistory" item xs={12}>
           <Conversation>
@@ -126,12 +115,12 @@ const Chat = (props) => {
           </Conversation>
         </Grid>
         <Grid className={classes.messageInput} item xs={12}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={7} md={11}>
+          <Grid container spacing={2} alignItems="center" justify="space-evenly">
+            <Grid item xs={9} md={10}>
               <TextField fullWidth id="outlined-basic" id="inputfield" value={inputMessage}
                          onChange={(e) => setInputMessage(e.target.value)} label="Enter a message" variant="outlined"/>
             </Grid>
-            <Grid item xs={5} md={1}>
+            <Grid item xs={3} md={2}>
               <Button variant='contained' onClick={handleSubmit} className={classes.button}>SEND&nbsp;
                 <SendIcon/></Button>
             </Grid>
