@@ -4,7 +4,7 @@
 
 sglg-communications is a colorful component which provides element `Chat` in which a user can query COVID-19 facts. It is a submission to the [Auth0 hackathon 2020](https://auth0.devpost.com/rules)
 
-<img width="626" alt="sglg-communications demo" src="https://user-images.githubusercontent.com/32281133/89730042-08b9e380-d9f0-11ea-92b7-50ae5bf72e69.png">
+<img width="626" alt="COVID-19 chatbot room" src="https://user-images.githubusercontent.com/32281133/89733187-9efa0380-da08-11ea-9d68-c18a6c8e8845.png">
 
 ## How it works
 
