@@ -1,10 +1,8 @@
 import React from 'react';
 import Chat from './Chat';
 
-export default { title: 'Chatroom' };
+export default {title: 'Chat component'};
 
-export const chat = () => <Chat 
-        organizationId={process.env.ORGANIZATION_ID}
-        public={process.env.PUBLIC_KEY}
-        private={process.env.PRIVATE_KEY}
-     />;
+export const chat = () => <Chat/>;
+
+export const foo = () => <div>Hello</div>
