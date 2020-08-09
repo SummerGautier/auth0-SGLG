@@ -67,7 +67,7 @@ const Chat = (props) => {
       }
     } else {
       return {
-        content: `Ask me about a country and I'll tell you a Covid-19 statistic`,
+        content: `Sorry, I don't understand. Ask me about any country and I'll tell you a Covid-19 statistic. Ex: 'Tell me about the United States of America'`,
         timestamp: timestamp + 1,
         from: "you"
       }
