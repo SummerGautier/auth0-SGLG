@@ -1,108 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import styled from "styled-components"
-import {Button, Grid, makeStyles, Paper, TextField, Typography} from '@material-ui/core'
+import {Button, Grid, Paper, TextField, Typography} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 import * as axios from 'axios'
-
-const useStyles = makeStyles((theme) => ({
-  header: {
-    backgroundColor: "#540032",
-    padding: theme.spacing(3),
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "white",
-    borderRadius: 3,
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0
-  },
-  messageHistory: {
-    padding: theme.spacing(3),
-    backgroundColor: "rgba(81, 0, 45,0.1)",
-    overflowX: "hidden",
-    overflowY: "scroll",
-    scrollSnapAlign: "end",
-    overscrollBehaviorY: "contain",
-    scrollSnapType: "y proximity",
-    paddingBottom: theme.spacing(6)
-  },
-  messageInput: {
-    padding: theme.spacing(3)
-    //borderTop:"1px solid rgba(0,0,0,0.5)"
-  },
-  button: {
-    backgroundColor: "#540032",
-    color: "white",
-    transition: "250ms",
-    '&:hover': {
-      backgroundColor: "black"
-    }
-  }
-}));
-
-export const Conversation = styled.div`
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-  margin: 10px 10px;
-  padding: 30px 30px;
-  display: flex;
-  height:50vh;
-  flex-direction: column;
-  padding: 10px;
-`
-export const ConversationBubble = styled.p`
-  max-width: 255px;
-  word-wrap: break-word;
-  margin-bottom: 12px;
-  line-height: 24px;
-  position:relative;
-  padding:10px 20px;
-  border-radius:25px;
-  &:before, &:after {
-    content: "";
-   position: absolute;
-    bottom: -2px;
-    height: 20px;
-}
-`
-export const FromMe = styled(ConversationBubble)`
- color: white;
- background: #F1424F;
- align-self: flex-end;
- &:last-child{
-     marginBottom:100px;
- }
- &:before {
-  right: -7px;
-  border-right: 20px solid #F1424F;
-  border-bottom-left-radius: 16px 14px;
-  transform: translate(0, -2px);
- }
- &:after {
-  right: -56px;
-  width: 26px;
-  background: #EDE5EA;
-  border-bottom-left-radius: 10px;
-  transform:translate(-30px, -2px);
- }
-`
-export const FromYou = styled(ConversationBubble)`
- background: #ff8e58;
- color:black;
- &:before {
-  left:-7px;
-  border-left:20px solid #ff8e58;
-  border-bottom-right-radius: 16px 14px;
-  transform:translate(0, -2px);
- }
- &:after {
-  left: 4px;
-  width: 26px;
-  background: #EDE5EA;
-  border-bottom-right-radius: 10px;
-  transform: translate(-30px, -2px);
- }
-`
+import {Conversation, FromMe, FromYou, useStyles} from './styles'
 
 
 const Chat = (props) => {
@@ -156,20 +56,6 @@ const Chat = (props) => {
       ]
     )
   }, [])
-
-  /**
-   * https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
-   * Returns a random integer between min (inclusive) and max (inclusive).
-   * The value is no lower than min (or the next integer greater than min
-   * if min isn't an integer) and no greater than max (or the next integer
-   * lower than max if max isn't an integer).
-   * Using Math.round() will give you a non-uniform distribution!
-   */
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
 
 
   function covid19Message(countryName) {
