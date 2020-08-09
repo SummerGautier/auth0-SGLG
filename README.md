@@ -49,4 +49,7 @@ This is a component which can be added to an app via:
 
 And called inside the app by:
 
-`import Chat from 'sglg-communications';`
+```
+import Chat from 'sglg-communications';
+<Chat/>
+```
