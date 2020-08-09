@@ -13,11 +13,9 @@ const Chat = (props) => {
   const [countryIndexes, setCountryIndexes] = useState({});
 
   function countriesFrom(data) {
-    let countriesKeys = {}
-    let idx = 0
+    let countriesKeys = []
     for (let country of data['Countries']) {
-      countriesKeys[country['Country']] = idx
-      idx += 1
+        countriesKeys.push([country['Country'], country['Slug'], country['CountryCode']])
     }
     return countriesKeys
   }
@@ -49,17 +47,30 @@ const Chat = (props) => {
   }, [])
 
 
-  function getCovidInfoByCountry(countryName) {
-    const countryData = covidData['Countries'][countryIndexes[countryName]]
+  function getCovidInfoByCountry(countryIndexNumber) {
+    const countryData = covidData['Countries'][countryIndexNumber]
     const newConfirmed = countryData['NewConfirmed']
-    return `According to John Hopkins, as of ${covidData['Date']} there are ${newConfirmed} cases of COVID-19 in ${countryName}`
+    return `According to John Hopkins, as of ${covidData['Date']} there are ${newConfirmed} cases of COVID-19 in ${countryData['Country']}`
+  }
+
+  function parseMessage(inputMessage){
+    let countryIndex = "undefined"
+    let closest = 0
+    countryIndexes.map((countryAliases,index) => {
+        const hasCountry = inputMessage.toLowerCase().includes(countryAliases[0].toLowerCase())? true : false
+        const hasSlug = inputMessage.toLowerCase().includes(countryAliases[1].toLowerCase().replace(/-/g, " "))? true : false
+        if(hasCountry || hasSlug){
+            countryIndex = index
+        }
+    })[0];
+    return countryIndex
   }
 
   function getBotResponse(inputMessage, timestamp) {
 
-    const requestedCountry = Object.keys(countryIndexes).filter(countryName => inputMessage.toLowerCase().includes(countryName.toLowerCase()))[0]
+    const requestedCountry = parseMessage(inputMessage);
 
-    if (typeof(requestedCountry) !== "undefined") {
+    if (requestedCountry !== "undefined") {
       return {
         content: getCovidInfoByCountry(requestedCountry),
         timestamp: timestamp + 1,
