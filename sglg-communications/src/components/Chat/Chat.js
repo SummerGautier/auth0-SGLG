@@ -9,8 +9,8 @@ const Chat = (props) => {
   const classes = useStyles()
   const [messageHistoryStore, setMessageHistoryStore] = useState([])
   const [inputMessage, setInputMessage] = useState("")
-  const [covid19Facts, setCovid19Facts] = useState([]);
-  const [covid19CountryIndexes, setCovid19CountryIndexes] = useState({});
+  const [covidData, setCovidData] = useState([]);
+  const [countryIndexes, setCountryIndexes] = useState({});
 
   function countriesFrom(data) {
     let countriesKeys = {}
@@ -24,13 +24,15 @@ const Chat = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(
+      axios(
         "https://api.covid19api.com/summary"
-      );
-      setCovid19Facts(result.data)
-      setCovid19CountryIndexes(countriesFrom(result.data))
-    };
+      ).then((response)=>{
+          setCovidData(response.data)
+          setCountryIndexes(countriesFrom(response.data))
+      });
+      
 
+    };
     fetchData();
   }, []);
 
@@ -47,17 +49,18 @@ const Chat = (props) => {
   }, [])
 
 
-  function covid19Message(countryName) {
-    const countryData = covid19Facts['Countries'][covid19CountryIndexes[countryName]]
+  function getCovidInfoByCountry(countryName) {
+    const countryData = covidData['Countries'][countryIndexes[countryName]]
     const newConfirmed = countryData['NewConfirmed']
-    return `Did you know... on ${covid19Facts['Date']} there are ${newConfirmed} cases in ${countryName}`
+    return `According to John Hopkins, as of ${covidData['Date']} there are ${newConfirmed} cases of COVID-19 in ${countryName}`
   }
 
-  function covidMessage(inputMessage, timestamp) {
-    const requestedCountries = Object.keys(covid19CountryIndexes).filter(countryName => inputMessage.includes(countryName))
-    if (requestedCountries.length > 0) {
+  function getBotResponse(inputMessage, timestamp) {
+
+    const requestedCountry = Object.keys(countryIndexes).filter(countryName => inputMessage.toLowerCase().includes(countryName.toLowerCase()))[0]
+    if (typeof(requestedCountry) !== undefined) {
       return {
-        content: covid19Message(requestedCountries[0]),
+        content: getCovidInfoByCountry(requestedCountry),
         timestamp: timestamp + 1,
         from: "you"
       }
@@ -73,23 +76,27 @@ const Chat = (props) => {
   function addMessage(inputMessage) {
     const timestamp = messageHistoryStore.length
     setInputMessage("")
-    const covidFact = covidMessage(inputMessage, timestamp)
+    const response = getBotResponse(inputMessage, timestamp)
     setMessageHistoryStore([...messageHistoryStore, {
         content: inputMessage,
         timestamp: timestamp,
         from: "me"
       },
-        covidFact
+        response
       ]
     )
+        setTimeout(function(){ 
+            var elem = document.getElementById('messageHistory');
+            elem.scrollTop = elem.scrollHeight;
+        }, 250);
+
+        
   }
 
 
   const handleSubmit = (e) => {
     if (inputMessage.trim() !== "") {
       addMessage(inputMessage)
-      var elem = document.getElementById('messageHistory');
-      elem.scrollTop = elem.scrollHeight;
     }
   }
 
@@ -102,13 +109,13 @@ const Chat = (props) => {
           <Typography variant='h5'> Covid-19 ChatBot</Typography>
         </Grid>
         <Grid className={classes.messageHistory} id="messageHistory" item xs={12}>
-          <Conversation>
+          <Conversation  className={classes.scrollable}>
             {
               messageHistoryStore.map((message) => {
                 if (message.from === "me") {
-                  return <FromMe key={message.timestamp}>{message.content}</FromMe>
+                  return <FromMe id={`message_${message.timestamp}`} key={message.timestamp}>{message.content}</FromMe>
                 } else {
-                  return <FromYou key={message.timestamp}>{message.content}</FromYou>
+                  return <FromYou id={`message_${message.timestamp}`} key={message.timestamp}>{message.content}</FromYou>
                 }
               })
             }

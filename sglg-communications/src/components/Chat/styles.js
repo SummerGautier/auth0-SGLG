@@ -24,13 +24,11 @@ export const useStyles = makeStyles((theme) => ({
   messageHistory: {
     padding: theme.spacing(3),
     backgroundColor: sunsetPurpleRgbaTranslucent,
+    paddingBottom: theme.spacing(6),
+    boxShadow:"inset -2px 2px 10px 5px rgba(0,0,0,0.2)",
     overflowX: "hidden",
     overflowY: "scroll",
-    scrollSnapAlign: "end",
-    overscrollBehaviorY: "contain",
-    scrollSnapType: "y proximity",
-    paddingBottom: theme.spacing(6),
-    boxShadow:"inset -2px 2px 10px 5px rgba(0,0,0,0.2)"
+    height:500
   },
   messageInput: {
     padding: theme.spacing(3),
@@ -53,7 +51,7 @@ export const Conversation = styled.div`
   margin: 10px 10px;
   padding: 30px 30px;
   display: flex;
-  height:50vh;
+  height:500px;
   flex-direction: column;
   padding: 10px;
 `
@@ -61,6 +59,7 @@ export const ConversationBubble = styled.p`
   max-width: 255px;
   word-wrap: break-word;
   margin-bottom: 12px;
+  border:1px solid rgba(0,0,0,0.2);
   line-height: 24px;
   position:relative;
   box-shadow:2px 2px 10px 2px rgba(0,0,0,0.3);
