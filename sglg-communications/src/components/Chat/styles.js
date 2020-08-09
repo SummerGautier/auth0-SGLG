@@ -2,9 +2,15 @@ import React from 'react';
 import styled from "styled-components"
 import {makeStyles} from '@material-ui/core'
 
+const sunsetPurple = "#540032"
+const sunsetPurpleRgbaTranslucent = "rgba(81, 0, 45,0.1)"
+const sunsetOrange = "#F1424F"
+const sunsetPale = "#EDE5EA"
+const sunsetOrangeBright = "#ff8e58"
+
 export const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor: "#540032",
+    backgroundColor: sunsetPurple,
     padding: theme.spacing(3),
     fontWeight: "bold",
     textAlign: "center",
@@ -15,7 +21,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   messageHistory: {
     padding: theme.spacing(3),
-    backgroundColor: "rgba(81, 0, 45,0.1)",
+    backgroundColor: sunsetPurpleRgbaTranslucent,
     overflowX: "hidden",
     overflowY: "scroll",
     scrollSnapAlign: "end",
@@ -28,7 +34,7 @@ export const useStyles = makeStyles((theme) => ({
     //borderTop:"1px solid rgba(0,0,0,0.5)"
   },
   button: {
-    backgroundColor: "#540032",
+    backgroundColor: sunsetPurple,
     color: "white",
     transition: "250ms",
     '&:hover': {
@@ -72,31 +78,31 @@ export const FromMe = styled(ConversationBubble)`
  }
  &:before {
   right: -7px;
-  border-right: 20px solid #F1424F;
+  border-right: 20px solid ${sunsetOrange};
   border-bottom-left-radius: 16px 14px;
   transform: translate(0, -2px);
  }
  &:after {
   right: -56px;
   width: 26px;
-  background: #EDE5EA;
+  background: ${sunsetPale};
   border-bottom-left-radius: 10px;
   transform:translate(-30px, -2px);
  }
 `
 export const FromYou = styled(ConversationBubble)`
- background: #ff8e58;
+ background: ${sunsetOrangeBright};
  color:black;
  &:before {
   left:-7px;
-  border-left:20px solid #ff8e58;
+  border-left:20px solid ${sunsetOrangeBright};
   border-bottom-right-radius: 16px 14px;
   transform:translate(0, -2px);
  }
  &:after {
   left: 4px;
   width: 26px;
-  background: #EDE5EA;
+  background: ${sunsetPale};
   border-bottom-right-radius: 10px;
   transform: translate(-30px, -2px);
  }
