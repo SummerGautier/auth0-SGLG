@@ -1,43 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components"
-import {Grid, makeStyles, Paper,Typography,TextField, Button} from '@material-ui/core'
+import {Grid, makeStyles, Paper, Typography, TextField, Button} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 
-const useStyles = makeStyles((theme)=>({
-   header:{
-       backgroundColor:"#540032",
-       padding:theme.spacing(3),
-       fontWeight:"bold",
-       textAlign:"center",
-       color:"white",
-       borderRadius:3,
-       borderBottomRightRadius:0,
-       borderBottomLeftRadius:0,
-   },
-   messageHistory:{
-       padding:theme.spacing(3),
-       backgroundColor:"rgba(81, 0, 45,0.1)",
-        overflowX: "hidden",
-        overflowY: "scroll",
-        scrollSnapAlign: "end",
-        overscrollBehaviorY: "contain",
-        scrollSnapType: "y proximity",
-        paddingBottom:theme.spacing(6)
-   },
-   messageInput:{
-       padding:theme.spacing(3),
-       //borderTop:"1px solid rgba(0,0,0,0.5)"
-   },
-   button:{
-        backgroundColor:"#540032",
-        color:"white",
-        transition:"250ms",
-        '&:hover':{
-            backgroundColor:"black"
-        }
-   },
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: "#540032",
+    padding: theme.spacing(3),
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
+    borderRadius: 3,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0
+  },
+  messageHistory: {
+    padding: theme.spacing(3),
+    backgroundColor: "rgba(81, 0, 45,0.1)",
+    overflowX: "hidden",
+    overflowY: "scroll",
+    scrollSnapAlign: "end",
+    overscrollBehaviorY: "contain",
+    scrollSnapType: "y proximity",
+    paddingBottom: theme.spacing(6)
+  },
+  messageInput: {
+    padding: theme.spacing(3)
+    //borderTop:"1px solid rgba(0,0,0,0.5)"
+  },
+  button: {
+    backgroundColor: "#540032",
+    color: "white",
+    transition: "250ms",
+    '&:hover': {
+      backgroundColor: "black"
+    }
+  }
 }));
-
 
 
 export const Conversation = styled.div`
@@ -106,85 +105,86 @@ export const FromYou = styled(ConversationBubble)`
 `
 
 
+const Chat = (props) => {
+  const classes = useStyles()
+  const [messageHistoryStore, setMessageHistoryStore] = useState([])
+  const [inputMessage, setInputMessage] = useState("")
 
-const Chat = (props) =>{
-    const classes = useStyles()
-    const [messageHistoryStore,setMessageHistoryStore] = useState([])
-    const [inputMessage, setInputMessage] = useState("")
+  useEffect(() => {
+    setMessageHistoryStore(
+      [
+        {
+          "content": "Hello, Sam!",
+          "timestamp": 0,
+          "from": "you"
+        },
+        {
+          "content": "How's the hackathon?",
+          "timestamp": 1,
+          "from": "me"
 
-    useEffect(()=>{
-        setMessageHistoryStore(
-            [
-                {
-                    "content":"Hello, Sam!",
-                    "timestamp": 0,
-                    "from":"you"
-                },
-                {
-                    "content":"How's the hackathon?",
-                    "timestamp":1,
-                    "from":"me"
-        
-                },
-                {
-                    "content":"um, it's going...",
-                    "timestamp":2,
-                    "from":"you"
-                }
-            ]
-
-        )
-    },[])
-
-    const handleSubmit = (e) =>{
-        if(inputMessage.trim() !== ""){
-            const timestamp = messageHistoryStore.length
-            setMessageHistoryStore([...messageHistoryStore,{
-                content:inputMessage,
-                timestamp:timestamp,
-                from:"me"
-            }])
-            setInputMessage("")
-            var elem = document.getElementById('messageHistory');
-            console.log(elem.scrollTop, elem.scrollHeight)
-            elem.scrollTop = elem.scrollHeight;
-            
+        },
+        {
+          "content": "um, it's going...",
+          "timestamp": 2,
+          "from": "you"
         }
-    }
-
-
-    return (
-        <div className={classes.container}>
-        <Grid className={classes.root} component={Paper} elevation={3} container direction="column" alignItems="stretch" justify="center" >
-            <Grid className={classes.header} item xs={12}>
-               <Typography variant='h5'> Chat Title Here</Typography>
-            </Grid>
-            <Grid className={classes.messageHistory} id="messageHistory" item xs={12}>
-                <Conversation>
-                    {
-                        messageHistoryStore.map((message)=>{
-                            if(message.from === "me"){
-                                return <FromMe key={message.timestamp}>{message.content}</FromMe>
-                            }else{
-                                return <FromYou key={message.timestamp}>{message.content}</FromYou>
-                            }
-                        })
-                    }
-                </Conversation>
-            </Grid>
-            <Grid className={classes.messageInput} item xs={12}>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={7} md={11}>
-                        <TextField fullWidth id="outlined-basic" id="inputfield" value={inputMessage} onChange={(e)=>setInputMessage(e.target.value)} label="Enter a message" variant="outlined" />
-                    </Grid>
-                    <Grid item xs={5} md={1}>
-                        <Button variant='contained' onClick={handleSubmit} className={classes.button}>SEND&nbsp;<SendIcon /></Button>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
-    </div>
+      ]
     )
+  }, [])
+
+  const handleSubmit = (e) => {
+    if (inputMessage.trim() !== "") {
+      const timestamp = messageHistoryStore.length
+      setMessageHistoryStore([...messageHistoryStore, {
+        content: inputMessage,
+        timestamp: timestamp,
+        from: "me"
+      }])
+      setInputMessage("")
+      var elem = document.getElementById('messageHistory');
+      console.log(elem.scrollTop, elem.scrollHeight)
+      elem.scrollTop = elem.scrollHeight;
+
+    }
+  }
+
+
+  return (
+    <div className={classes.container}>
+      <Grid className={classes.root} component={Paper} elevation={3} container direction="column" alignItems="stretch"
+            justify="center">
+        <Grid className={classes.header} item xs={12}>
+          <Typography variant='h5'> Chat Title Here</Typography>
+        </Grid>
+        <Grid className={classes.messageHistory} id="messageHistory" item xs={12}>
+          <Conversation>
+            {
+              messageHistoryStore.map((message) => {
+                if (message.from === "me") {
+                  return <FromMe key={message.timestamp}>{message.content}</FromMe>
+                } else {
+                  return <FromYou key={message.timestamp}>{message.content}</FromYou>
+                }
+              })
+            }
+          </Conversation>
+        </Grid>
+        <Grid className={classes.messageInput} item xs={12}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={7} md={11}>
+              <TextField fullWidth id="outlined-basic" id="inputfield" value={inputMessage}
+                         onChange={(e) => setInputMessage(e.target.value)} label="Enter a message" variant="outlined"/>
+            </Grid>
+            <Grid item xs={5} md={1}>
+              <Button variant='contained' onClick={handleSubmit} className={classes.button}>SEND&nbsp;
+                <SendIcon/></Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
+  )
 }
 
 export default Chat;
