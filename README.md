@@ -1,5 +1,9 @@
 # sglg-communications
 
+[![npm package][npm-badge]][npm]
+[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
+[npm]: https://www.npmjs.org/package/npm-package
+
 ## About
 
 sglg-communications is a colorful component which provides element `Chat` in which a user can query COVID-19 facts. It is a submission to the [Auth0 hackathon 2020](https://auth0.devpost.com/rules)
