@@ -1,8 +1,6 @@
 # sglg-communications
 
-[![npm package][npm-badge]][npm]
-[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
+[![npm version](https://badge.fury.io/js/sglg-communications.svg)](https://badge.fury.io/js/sglg-communications)
 
 ## About
 
